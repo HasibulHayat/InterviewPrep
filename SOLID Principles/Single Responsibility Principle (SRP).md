@@ -1,12 +1,3 @@
-# Single Responsibility Principle (SRP) in Java: Conversation and Examples
-
-This document captures a conversation about the **Single Responsibility Principle (SRP)**, including explanations and Java examples. SRP states that a class should have only one reason to change, meaning it should handle a single responsibility.
-
----
-
-## Question 1: Teach me SRP with an example in Java
-
-### Response
 
 The **Single Responsibility Principle (SRP)** is one of the SOLID principles of object-oriented design. It states that **a class should have only one reason to change**, meaning it should have only one responsibility or job. This makes classes easier to maintain, test, and extend.
 
