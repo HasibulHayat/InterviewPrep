@@ -1,7 +1,7 @@
 # SRP
 <br>
 
-The **Single Responsibility Principle (SRP)** is one of the SOLID principles of object-oriented design. It states that **a class should have only one reason to change**, meaning it should have only one responsibility or job. This makes classes easier to maintain, test, and extend. 
+The **Single Responsibility Principle (SRP)** is one of the SOLID principles of object-oriented design. It states that `a class should have only one reason to change`, meaning it should have only one responsibility or job. This makes classes easier to maintain, test, and extend. 
 <br><br>
 
 ### Key Idea
@@ -34,7 +34,9 @@ public class Employee {
         this.salary = salary;
     }
 
+
     // Responsibility 1: Manage employee data
+
     public String getName() {
         return name;
     }
@@ -53,7 +55,9 @@ public class Employee {
         return salary * 0.10;
     }
 
+
     // Responsibility 3: Generate report
+
     public String generateReport() {
         return "Employee Report:\n" +
                "ID: " + id + "\n" +
@@ -114,7 +118,9 @@ public class Employee {
     }
 }
 
+
 // Responsibility 2: Calculate bonus
+
 public class BonusCalculator {
     public double calculateBonus(Employee employee) {
         // Simple bonus: 10% of salary
@@ -122,7 +128,9 @@ public class BonusCalculator {
     }
 }
 
+
 // Responsibility 3: Generate report
+
 public class EmployeeReportGenerator {
     public String generateReport(Employee employee, BonusCalculator bonusCalculator) {
         return "Employee Report:\n" +
