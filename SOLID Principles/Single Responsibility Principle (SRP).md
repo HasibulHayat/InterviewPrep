@@ -63,6 +63,7 @@ public class Employee {
 
 ```
 
+<br><br>
 
 ## Problems with the Original Employee Class
 
@@ -70,6 +71,7 @@ public class Employee {
 - If the bonus calculation logic changes (e.g., different rules for different roles), the `Employee` class must change, even though its core purpose is to represent an employee.
 - If the report format changes (e.g., to JSON or PDF), the `Employee` class must be modified, which is unrelated to employee data or bonuses.
 - Testing the report generation requires dealing with bonus calculation, making tests more complex.
+<br><br>
 
 ## Refactored Example (Following SRP)
 
@@ -79,6 +81,7 @@ To adhere to the **Single Responsibility Principle (SRP)**, we’ll split the re
 - **BonusCalculator**: Calculates the employee’s bonus.
 - **EmployeeReportGenerator**: Generates reports for employees.
 
+### <br><br>
 
 ```java
 // Responsibility 1: Manage employee data
@@ -125,12 +128,14 @@ public class EmployeeReportGenerator {
     }
 }
 ```
+<br><br>
 
 ## Why This Follows SRP
 
 - **Employee**: Only responsible for storing and providing access to employee data (name, ID, salary). It doesn’t handle bonuses or reporting.
 - **BonusCalculator**: Only responsible for calculating the bonus based on employee data. If bonus rules change (e.g., different percentages for managers), only this class needs modification.
 - **EmployeeReportGenerator**: Only responsible for formatting and generating reports. If the report format changes (e.g., to HTML or CSV), only this class is affected.
+<br><br>
 
 ## Benefits of SRP
 
@@ -138,6 +143,7 @@ public class EmployeeReportGenerator {
 - **Testability**: Smaller, single-purpose classes are easier to test. For example, you can test `BookPersistence` without worrying about printing logic.
 - **Reusability**: The `BookPrinter` or `BookPersistence` classes can be reused for other types of books or objects.
 - **Flexibility**: You can swap out `BookPersistence` for a `DatabasePersistence` class without touching `Book` or `BookPrinter`.
+<br><br>
 
 ## When to Apply SRP
 
