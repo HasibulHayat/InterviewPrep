@@ -47,3 +47,18 @@ public class Book {
         }
     }
 }
+```
+
+## Benefits of SRP
+
+- **Maintainability**: Each class is focused, so changes to one responsibility don’t affect others.
+- **Testability**: Smaller, single-purpose classes are easier to test. For example, you can test `BookPersistence` without worrying about printing logic.
+- **Reusability**: The `BookPrinter` or `BookPersistence` classes can be reused for other types of books or objects.
+- **Flexibility**: You can swap out `BookPersistence` for a `DatabasePersistence` class without touching `Book` or `BookPrinter`.
+
+## When to Apply SRP
+
+- If a class is doing too much (e.g., mixing data management with I/O operations), consider splitting it.
+- Be cautious not to over-engineer. If responsibilities are tightly related and unlikely to change independently, they might belong together.
+
+
