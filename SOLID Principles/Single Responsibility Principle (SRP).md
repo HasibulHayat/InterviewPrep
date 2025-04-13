@@ -18,7 +18,7 @@ Suppose we have an Employee class that handles:
 3. Generating a report for the employee.
 
 
-
+<br>
 ```java
 
 public class Employee {
