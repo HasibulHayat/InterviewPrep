@@ -22,6 +22,7 @@ Suppose we have an Employee class that handles:
 ```java
 
 // Employee Class
+
 public class Employee {
     private String name;
     private String id;
@@ -84,8 +85,11 @@ To adhere to the **Single Responsibility Principle (SRP)**, we’ll split the re
 
 ### <br>
 
+
 ```java
+
 // Responsibility 1: Manage employee data
+
 public class Employee {
     private String name;
     private String id;
