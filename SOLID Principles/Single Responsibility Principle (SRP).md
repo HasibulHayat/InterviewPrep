@@ -64,6 +64,73 @@ public class Employee {
 ```
 
 
+## Problems with the Original Employee Class
+
+- The `Employee` class has three responsibilities: managing employee data, calculating bonuses, and generating reports.
+- If the bonus calculation logic changes (e.g., different rules for different roles), the `Employee` class must change, even though its core purpose is to represent an employee.
+- If the report format changes (e.g., to JSON or PDF), the `Employee` class must be modified, which is unrelated to employee data or bonuses.
+- Testing the report generation requires dealing with bonus calculation, making tests more complex.
+
+## Refactored Example (Following SRP)
+
+To adhere to the **Single Responsibility Principle (SRP)**, we’ll split the responsibilities into separate classes:
+
+- **Employee**: Manages employee data.
+- **BonusCalculator**: Calculates the employee’s bonus.
+- **EmployeeReportGenerator**: Generates reports for employees.
+
+
+```java
+// Responsibility 1: Manage employee data
+public class Employee {
+    private String name;
+    private String id;
+    private double salary;
+
+    public Employee(String name, String id, double salary) {
+        this.name = name;
+        this.id = id;
+        this.salary = salary;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+}
+
+// Responsibility 2: Calculate bonus
+public class BonusCalculator {
+    public double calculateBonus(Employee employee) {
+        // Simple bonus: 10% of salary
+        return employee.getSalary() * 0.10;
+    }
+}
+
+// Responsibility 3: Generate report
+public class EmployeeReportGenerator {
+    public String generateReport(Employee employee, BonusCalculator bonusCalculator) {
+        return "Employee Report:\n" +
+               "ID: " + employee.getId() + "\n" +
+               "Name: " + employee.getName() + "\n" +
+               "Salary: $" + employee.getSalary() + "\n" +
+               "Bonus: $" + bonusCalculator.calculateBonus(employee);
+    }
+}
+```
+
+## Why This Follows SRP
+
+- **Employee**: Only responsible for storing and providing access to employee data (name, ID, salary). It doesn’t handle bonuses or reporting.
+- **BonusCalculator**: Only responsible for calculating the bonus based on employee data. If bonus rules change (e.g., different percentages for managers), only this class needs modification.
+- **EmployeeReportGenerator**: Only responsible for formatting and generating reports. If the report format changes (e.g., to HTML or CSV), only this class is affected.
 
 ## Benefits of SRP
 
