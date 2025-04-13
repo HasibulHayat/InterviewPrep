@@ -21,6 +21,7 @@ Suppose we have an Employee class that handles:
 
 ```java
 
+// Employee Class
 public class Employee {
     private String name;
     private String id;
@@ -81,7 +82,7 @@ To adhere to the **Single Responsibility Principle (SRP)**, we’ll split the re
 - **BonusCalculator**: Calculates the employee’s bonus.
 - **EmployeeReportGenerator**: Generates reports for employees.
 
-### <br><br>
+### <br>
 
 ```java
 // Responsibility 1: Manage employee data
