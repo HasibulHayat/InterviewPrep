@@ -1,0 +1,131 @@
+# Open-Closed Principle (OCP) with Notification Example
+
+## Definition
+The **Open-Closed Principle (OCP)** states that software entities (classes, modules, functions, etc.) should be **open for extension** but **closed for modification**. This means you should be able to add new functionality without changing existing code. In the context of the notification example, OCP ensures that adding a new notification type (e.g., Telegram) doesn’t require modifying the existing `NotificationSender` or core logic of `NotificationType`.
+
+## Real-World Example
+Consider a notification system in a messaging app that sends notifications via email, SMS, or WhatsApp. Initially, the system supports these three channels, but later, you want to add Telegram notifications. Without OCP, you’d need to modify the notification-sending logic every time a new channel is added, risking bugs in existing functionality. OCP allows you to extend the system by adding new types while keeping the original code unchanged, like adding a new notification plugin without altering the core app.
+
+## Before Applying OCP
+Before applying OCP, the notification system uses an enum `NotificationType` with methods for each type and a `NotificationSender` class that relies on `if-else` to dispatch notifications. Adding a new type requires modifying both classes, violating OCP.
+
+```java
+import java.util.List;
+
+public enum NotificationType {
+    EMAIL, SMS, WHATSAPP;
+
+    public void sendSMSNotification() {
+        System.out.println("sendSMSNotification");
+    }
+
+    public void sendEmailNotification() {
+        System.out.println("sendEmailNotification");
+    }
+
+    public void sendWhatsAppNotification() {
+        System.out.println("sendWhatsAppNotification");
+    }
+}
+
+class NotificationSender {
+    public void sendNotification(List<NotificationType> notificationTypes) {
+        for (NotificationType type : notificationTypes) {
+            if (type == NotificationType.SMS) {
+                type.sendSMSNotification();
+            } else if (type == NotificationType.EMAIL) {
+                type.sendEmailNotification();
+            } else if (type == NotificationType.WHATSAPP) {
+                type.sendWhatsAppNotification();
+            }
+        }
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        List<NotificationType> types = List.of(NotificationType.EMAIL, NotificationType.SMS, NotificationType.WHATSAPP);
+        NotificationSender sender = new NotificationSender();
+        sender.sendNotification(types);
+    }
+}
+```
+
+### Issues
+- **Violation of OCP**: To add a new type (e.g., `TELEGRAM`), you must:
+  - Add `TELEGRAM` to `NotificationType` and define `sendTelegramNotification`.
+  - Modify `NotificationSender` to include a new `else if` branch for `TELEGRAM`.
+- **Tight Coupling**: `NotificationSender` depends on specific `NotificationType` constants and their methods.
+- **Poor Encapsulation**: Each `NotificationType` has methods it shouldn’t (e.g., `EMAIL` can call `sendSMSNotification`), leading to potential misuse.
+- **Maintenance Overhead**: Every new type requires changes to tested code, increasing the risk of errors.
+
+## After Applying OCP
+To adhere to OCP, we refactor the code using polymorphism. Each `NotificationType` defines its own behavior via an abstract `send` method, and `NotificationSender` calls this method without knowing the specific type. This allows new types to be added by extending `NotificationType` without modifying `NotificationSender`.
+
+```java
+import java.util.List;
+
+public enum NotificationType {
+    EMAIL {
+        @Override
+        public void send() {
+            System.out.println("sendEmailNotification");
+        }
+    },
+    SMS {
+        @Override
+        public void send() {
+            System.out.println("sendSMSNotification");
+        }
+    },
+    WHATSAPP {
+        @Override
+        public void send() {
+            System.out.println("sendWhatsAppNotification");
+        }
+    };
+
+    public abstract void send();
+}
+
+class NotificationSender {
+    public void sendNotification(List<NotificationType> notificationTypes) {
+        for (NotificationType type : notificationTypes) {
+            type.send(); // Polymorphic call
+        }
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        List<NotificationType> types = List.of(NotificationType.EMAIL, NotificationType.SMS, NotificationType.WHATSAPP);
+        NotificationSender sender = new NotificationSender();
+        sender.sendNotification(types);
+    }
+}
+```
+
+### How It’s Improved
+- **Adding New Types**: To add `TELEGRAM`, simply define it in `NotificationType`:
+  ```java
+  TELEGRAM {
+      @Override
+      public void send() {
+          System.out.println("sendTelegramNotification");
+      }
+  }
+  ```
+  No changes to `NotificationSender` are needed, satisfying OCP.
+- **Polymorphism**: The `send` method ensures each type handles its own logic, eliminating `if-else`.
+- **Encapsulation**: Each type only implements its specific behavior, preventing misuse (e.g., `EMAIL` can’t send SMS).
+- **Extensibility**: The system is open for new types without modifying existing code.
+
+## Benefits
+- **Extensibility**: New notification types can be added without touching `NotificationSender`, reducing regression risks.
+- **Maintainability**: Eliminates repetitive `if-else` logic, making the code cleaner and easier to understand.
+- **Robustness**: Polymorphic design ensures each type is responsible for its own behavior, reducing errors.
+- **Scalability**: Supports future growth (e.g., adding complex notification logic) without restructuring.
+- **Testability**: New types can be tested independently without altering existing tests.
+
+## Summary
+The Open-Closed Principle ensures that the notification system can grow without modifying existing code. Before applying OCP, the `NotificationSender` relied on `if-else` checks, requiring changes for each new type, which violated OCP. After refactoring, `NotificationType` uses an abstract `send` method, allowing new types like `TELEGRAM` to be added by extending the enum while keeping `NotificationSender` unchanged. This design is more flexible, maintainable, and aligned with OCP, making it easier to handle future requirements in the notification system.
