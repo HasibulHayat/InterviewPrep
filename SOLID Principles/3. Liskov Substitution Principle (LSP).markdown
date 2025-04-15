@@ -1,0 +1,183 @@
+# Liskov Substitution Principle (LSP) with Card Payment System
+
+## Definition
+The **Liskov Substitution Principle (LSP)** states that objects of a superclass or interface should be replaceable with objects of a subclass or implementation without breaking the program’s correctness. In a card payment system, this means any payment method implementing a `Payment` interface (e.g., credit card, debit card) must adhere to the expected behavior of processing payments when used by a `PaymentProcessor`, ensuring seamless substitutability.
+
+## Real-World Example
+Consider an online store’s payment system that processes transactions via credit cards, debit cards, or gift cards. Customers expect all payment methods to deduct funds and confirm the transaction. If a new payment type, like a “PromotionalCard,” fails to process payment or behaves inconsistently (e.g., skips charging), it disrupts the checkout process, confusing users. LSP ensures that every payment method behaves reliably, like expecting any light bulb to illuminate when plugged into a standard socket, regardless of its brand.
+
+## Before Applying LSP
+Before applying LSP, the payment system includes a flawed implementation that violates the principle. A `PromotionalCard` payment type doesn’t process a charge (assuming it’s free), breaking the expectation that all payments deduct funds.
+
+```java
+import java.util.List;
+
+public interface Payment {
+    void processPayment(double amount);
+}
+
+public class CreditCardPayment implements Payment {
+    @Override
+    public void processPayment(double amount) {
+        System.out.println("Processing CREDIT CARD payment of $" + amount);
+    }
+}
+
+public class DebitCardPayment implements Payment {
+    @Override
+    public void processPayment(double amount) {
+        System.out.println("Processing DEBIT CARD payment of $" + amount);
+    }
+}
+
+public class GiftCardPayment implements Payment {
+    @Override
+    public void processPayment(double amount) {
+        System.out.println("Processing GIFT CARD payment of $" + amount);
+    }
+}
+
+public class PromotionalCardPayment implements Payment {
+    @Override
+    public void processPayment(double amount) {
+        // Does nothing, assuming promotional card is "free"
+        // Violates expectation of processing a payment
+    }
+}
+
+public class PaymentProcessor {
+    public void processPayments(List<Payment> payments, double amount) {
+        for (Payment payment : payments) {
+            payment.processPayment(amount);
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("\nHello and Welcome to Liskov Substitution Principle! \n");
+        List<Payment> payments = List.of(
+            new CreditCardPayment(),
+            new DebitCardPayment(),
+            new GiftCardPayment(),
+            new PromotionalCardPayment()
+        );
+        PaymentProcessor processor = new PaymentProcessor();
+        processor.processPayments(payments, 50.0);
+    }
+}
+```
+
+### Issues
+- **LSP Violation**: `PromotionalCardPayment` implements `Payment` but fails to process a payment, breaking the contract that `processPayment` deducts funds or confirms a transaction. When substituted in `PaymentProcessor`, it silently skips the action, altering correctness (no charge or confirmation).
+- **Unexpected Behavior**: `PaymentProcessor` expects all payments to produce a transaction effect (e.g., log or charge). `PromotionalCardPayment` undermines this, making it hard to verify if payments succeeded.
+- **Inconsistent Contract**: The `Payment` interface implies a financial transaction, but `PromotionalCardPayment` violates this, reducing trust in substitutability.
+- **Debugging Difficulty**: Silent failures (no output for `PromotionalCardPayment`) confuse users and developers (e.g., “Why wasn’t the payment processed?”).
+
+**Output**:
+```
+Hello and Welcome to Liskov Substitution Principle!
+
+Processing CREDIT CARD payment of $50.0
+Processing DEBIT CARD payment of $50.0
+Processing GIFT CARD payment of $50.0
+```
+(Note: No output for `PromotionalCardPayment`, which is unexpected.)
+
+## After Applying LSP
+To adhere to LSP, we ensure all `Payment` implementations fulfill the `processPayment` contract consistently, meaning every call processes a transaction or logs an action. We redesign `PromotionalCardPayment` to confirm its action (e.g., logging a zero-charge transaction), and clarify the contract with documentation.
+
+```java
+import java.util.List;
+
+public interface Payment {
+    /**
+     * Processes a payment for the specified amount, confirming a transaction
+     * (e.g., deducting funds or logging a zero-charge action).
+     * Implementations must ensure a verifiable effect.
+     */
+    void processPayment(double amount);
+}
+
+public class CreditCardPayment implements Payment {
+    @Override
+    public void processPayment(double amount) {
+        System.out.println("Processing CREDIT CARD payment of $" + amount);
+    }
+}
+
+public class DebitCardPayment implements Payment {
+    @Override
+    public void processPayment(double amount) {
+        System.out.println("Processing DEBIT CARD payment of $" + amount);
+    }
+}
+
+public class GiftCardPayment implements Payment {
+    @Override
+    public void processPayment(double amount) {
+        System.out.println("Processing GIFT CARD payment of $" + amount);
+    }
+}
+
+public class PromotionalCardPayment implements Payment {
+    @Override
+    public void processPayment(double amount) {
+        System.out.println("Processing PROMOTIONAL CARD payment: $0.0 (free transaction)");
+    }
+}
+
+public class PaymentProcessor {
+    public void processPayments(List<Payment> payments, double amount) {
+        for (Payment payment : payments) {
+            payment.processPayment(amount);
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("\nHello and Welcome to Liskov Substitution Principle! \n");
+        List<Payment> payments = List.of(
+            new CreditCardPayment(),
+            new DebitCardPayment(),
+            new GiftCardPayment(),
+            new PromotionalCardPayment()
+        );
+        PaymentProcessor processor = new PaymentProcessor();
+        processor.processPayments(payments, 50.0);
+    }
+}
+```
+
+### How It’s Improved
+- **LSP Compliance**: All implementations (`CreditCardPayment`, `DebitCardPayment`, `GiftCardPayment`, `PromotionalCardPayment`) fulfill the `processPayment` contract by confirming a transaction. `PromotionalCardPayment` logs a zero-charge action, ensuring substitutability in `PaymentProcessor`.
+- **Clear Contract**: Javadoc specifies that `processPayment` must produce a verifiable effect, guiding implementers.
+- **Consistent Behavior**: Every payment type produces output, making the system predictable and transparent.
+- **Substitutability**: Any `Payment` implementation can be used interchangeably without disrupting `PaymentProcessor`.
+
+**Output**:
+```
+Hello and Welcome to Liskov Substitution Principle!
+
+Processing CREDIT CARD payment of $50.0
+Processing DEBIT CARD payment of $50.0
+Processing GIFT CARD payment of $50.0
+Processing PROMOTIONAL CARD payment: $0.0 (free transaction)
+```
+
+## Benefits
+- **Reliability**: Ensures all `Payment` implementations process transactions as expected, preventing silent failures in `PaymentProcessor`.
+- **Maintainability**: A clear contract simplifies adding new payment types without breaking existing logic.
+- **Transparency**: Consistent transaction confirmation (e.g., logging) aids debugging and auditing.
+- **Flexibility**: Supports varied payment types (e.g., zero-charge promotions, external APIs) as long as they meet the contract.
+- **Testability**: Substitutable implementations enable easy mocking for unit tests, ensuring robust validation.
+
+## Summary
+The Liskov Substitution Principle ensures that any `Payment` implementation can be used in `PaymentProcessor` without compromising correctness. Before applying LSP, `PromotionalCardPayment` violated the `processPayment` contract by doing nothing, leading to inconsistent behavior. After refactoring, all types, including a redesigned `PromotionalCardPayment`, confirm transactions, ensuring substitutability. The interface-based design, with clear documentation and uniform behavior, aligns with LSP, making the card payment system reliable and extensible.
+
+## When Not to Use LSP
+- **Simple, fixed systems**: If the payment system has a small, unchanging set of methods (e.g., only credit and debit cards), enforcing LSP with interfaces may add unneeded complexity.
+- **Prototyping or temporary code**: In quick prototypes where speed outweighs correctness, strict LSP adherence can delay development without immediate value.
+- **Performance-critical applications**: For systems processing millions of transactions per second, polymorphism’s overhead (e.g., interface calls) might justify simpler, less flexible designs.
+- **Highly diverse behaviors**: If payment methods require vastly different actions (e.g., some don’t process funds), forcing LSP compliance might restrict flexibility, suggesting separate interfaces instead.
