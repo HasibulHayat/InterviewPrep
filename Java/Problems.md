@@ -2,3 +2,5 @@
 ### 2. Rotating an Array
       - Left Rotate
       - Right Rotate
+      - Rotating 1 or more on both left and right
+      
