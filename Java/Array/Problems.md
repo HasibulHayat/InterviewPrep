@@ -8,3 +8,4 @@
 ### 4. Deleting an Element
 ### 5. Increase / Decrease Size of an Array
 ### 6. Manually Copy an Array
+### 7. Matrix Multiplication Manually Using an Array
