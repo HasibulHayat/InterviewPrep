@@ -4,3 +4,5 @@
       - Right Rotate
       - Rotating 1 or more on both left and right
       
+### 3. Inserting an Element
+### 4. Deleting an Element
