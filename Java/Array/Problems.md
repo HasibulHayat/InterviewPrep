@@ -7,3 +7,4 @@
 ### 3. Inserting an Element
 ### 4. Deleting an Element
 ### 5. Increase / Decrease Size of an Array
+### 6. Manually Copy an Array
