@@ -26,4 +26,4 @@ If you’re the author of any source referenced here and would like attribution,
 
 ---
 
-> 📁 You can explore each `.md` file to get detailed explanations and examples related to its respective SOLID principle.
+
