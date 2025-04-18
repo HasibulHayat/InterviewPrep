@@ -10,3 +10,14 @@ This makes code cleaner, more maintainable, and avoids unnecessary dependencies.
 ### Key Idea
 - Split large interfaces into smaller, more specific ones so that classes only need to implement what they actually use.
 - Don't force a class to implement methods it does not use.
+
+### When to Use ISP
+- An interface has `too many methods` that don't apply to all implementations.
+- You're working on a `large system` where multiple classes use the same interface but need different behaviors.
+- You're building a library or framework and want to give `flexibility` to users without forcing them to implement `irrelevant methods`.
+- You want to avoid unnecessary dependencies `(tight coupling)` in your code.
+
+### When Not to Use ISP
+- The interface is already small and has a `single responsibility`.
+- You're working on a `quick prototype` or `simple app` with minimal classes.
+- You only have `one implementation`, and the interface is unlikely to change.
