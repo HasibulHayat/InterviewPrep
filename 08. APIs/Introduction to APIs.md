@@ -1,6 +1,6 @@
-# 📘 Introduction to APIs
+# Introduction to APIs
 
-## 🔹 What is an API?
+## What is an API?
 
 **API** stands for **Application Programming Interface**. It is a set of rules and protocols that allow one software application to interact with another.
 
@@ -11,21 +11,7 @@ Think of an API like a **waiter in a restaurant**:
 
 ---
 
-## 🔹 Types of APIs
-
-1. **Web APIs** (most common today)
-   - Accessible over the web using **HTTP/HTTPS**
-   - Example: REST APIs, GraphQL APIs
-
-2. **Library APIs**
-   - Functions provided by programming libraries (e.g., `Math.sqrt()` in Java)
-
-3. **OS APIs**
-   - Allow apps to interact with operating system functions
-
----
-
-## 🔹 Web APIs
+## Web APIs
 
 Let’s focus on **Web APIs**, especially **REST APIs**, which are most commonly used.
 
@@ -49,7 +35,7 @@ Let’s focus on **Web APIs**, especially **REST APIs**, which are most commonly
 
 ---
 
-## 🔹 Example: Simple REST API
+## Example: Simple REST API
 
 Let’s say you’re building a **Library Management System**.
 
@@ -62,13 +48,3 @@ Let’s say you’re building a **Library Management System**.
 
 ---
 
-## 🔹 How APIs Communicate
-
-Communication usually happens in **JSON** format.
-
-### Example Request (POST):
-```json
-{
-  "title": "Clean Code",
-  "author": "Robert C. Martin"
-}
