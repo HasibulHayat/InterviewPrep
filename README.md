@@ -9,3 +9,5 @@
 7. Build Systems
 8. APIs
 9. MicroServices
+10. LLD
+11. HLD
