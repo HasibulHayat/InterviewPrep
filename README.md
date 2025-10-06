@@ -3,11 +3,8 @@
 1. Java
 2. DSA
 3. Database
-4. SOLID Principles
-5. Design Patterns
-6. Backend Architecture
-7. Build Systems
-8. APIs
-9. MicroServices
-10. LLD
-11. HLD
+4. HLD
+5. LLD
+6. APIs
+7. MicroServices
+
