@@ -105,5 +105,4 @@ There are `seven` creational design patterns commonly recognized in software eng
 - **`Object Pool and Dependency Injection`** are widely accepted as creational patterns in modern literature due to their focus on object creation and lifecycle management.
 - Some sources may list only the GoF's five patterns or include additional niche patterns, but seven is the most comprehensive and commonly referenced count.
 
----
 
